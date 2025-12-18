@@ -5,279 +5,259 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cupón especial</title>
   <style>
-    :root {
-      --bg1: #fdf2ff;
-      --bg2: #e0c3fc;
-      --card: #ffffff;
-      --accent: #a855f7;
-      --accent-dark: #9333ea;
-      --used: #fb7185;
-      --text: #2b123a;
-      --muted: #7b6b8f;
-      --radius: 22px;
+    :root{
+      --bg1:#fdf2ff;
+      --bg2:#e0c3fc;
+      --card:#ffffff;
+      --accent:#a855f7;
+      --accent-dark:#9333ea;
+      --used:#fb7185;
+      --text:#2b123a;
+      --muted:#7b6b8f;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(32, 8, 46, .12);
+      --maxw:520px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:radial-gradient(1200px 800px at 20% 10%, var(--bg2), transparent 55%),
+                 radial-gradient(1200px 800px at 80% 90%, #ffd6ff, transparent 55%),
+                 linear-gradient(120deg, var(--bg1), #ffffff);
+      color:var(--text);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    .announcement, .coupon-card{
+      width:100%;
+      max-width:var(--maxw);
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(168,85,247,.18);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      backdrop-filter: blur(10px);
     }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top, var(--bg1), var(--bg2));
-      padding: 1.5rem;
+    .announcement h2{
+      font-size:26px;
+      letter-spacing:.2px;
+      margin-bottom:10px;
+    }
+    .announcement p{
+      color:var(--muted);
+      margin-bottom:16px;
+      line-height:1.45;
     }
 
-    .announcement {
-      max-width: 450px;
-      width: 100%;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 20px 50px rgba(88, 28, 135, 0.3);
-      padding: 2rem;
-      text-align: center;
-      animation: fadeIn 0.8s ease;
+    .btn-main, #redeem-btn, #gcal-btn{
+      width:100%;
+      border:none;
+      border-radius:14px;
+      padding:14px 16px;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+      box-shadow:0 10px 22px rgba(168,85,247,.22);
+    }
+    .btn-main, #redeem-btn{
+      background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color:white;
+    }
+    #gcal-btn{
+      background:linear-gradient(135deg, #7c3aed, #4f46e5);
+      color:white;
+      box-shadow:0 10px 22px rgba(79,70,229,.22);
+    }
+    .btn-main:hover, #redeem-btn:hover, #gcal-btn:hover{filter:brightness(1.03);}
+    .btn-main:active, #redeem-btn:active, #gcal-btn:active{transform:translateY(1px);}
+    #redeem-btn[disabled]{opacity:.55; cursor:not-allowed; filter:saturate(.7);}
+
+    .coupon-card{display:none; position:relative; overflow:hidden;}
+    .tag{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(168,85,247,.12);
+      border:1px solid rgba(168,85,247,.22);
+      font-weight:700;
+      color:#4a1c6b;
+      margin-bottom:14px;
     }
 
-    .announcement h2 {
-      font-size: 1.4rem;
-      color: var(--text);
-      margin-bottom: 0.8rem;
+    .coupon-title{
+      font-size:28px;
+      line-height:1.15;
+      margin-bottom:10px;
+    }
+    .coupon-desc{
+      color:var(--muted);
+      line-height:1.5;
+      margin-bottom:14px;
     }
 
-    .announcement p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 1.4rem;
+    .status-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin:14px 0 14px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(2, 6, 23, .04);
+      border:1px solid rgba(2, 6, 23, .06);
+    }
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:800;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(168,85,247,.25);
+      background:rgba(168,85,247,.10);
+      color:#4a1c6b;
+      white-space:nowrap;
+    }
+    .status-dot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 4px rgba(168,85,247,.18);
+    }
+    .status-pill.used{
+      background:rgba(251,113,133,.14);
+      border-color:rgba(251,113,133,.25);
+      color:#7a0f2a;
+    }
+    .status-pill.used .status-dot{
+      background:var(--used);
+      box-shadow:0 0 0 4px rgba(251,113,133,.18);
     }
 
-    .btn-main {
-      width: 100%;
-      border: none;
-      border-radius: 999px;
-      padding: 0.9rem 1rem;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
-      background-size: 200% 200%;
-      color: #fff7ff;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background-position 0.5s ease;
-      box-shadow: 0 12px 26px rgba(192, 38, 211, 0.45);
+    .extra-text{
+      margin-top:12px;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:14px;
+      text-align:center;
     }
 
-    .btn-main:hover {
-      transform: translateY(-1px);
-      background-position: 100% 0%;
-      box-shadow: 0 16px 32px rgba(168, 85, 247, 0.6);
+    /* Agenda */
+    .scheduler{
+      margin-top:14px;
+      padding:14px;
+      border-radius:14px;
+      background:rgba(79,70,229,.06);
+      border:1px solid rgba(79,70,229,.14);
+      display:none;
+    }
+    .scheduler h3{
+      font-size:16px;
+      margin-bottom:10px;
+      letter-spacing:.2px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    label{
+      font-size:12px;
+      font-weight:700;
+      color:#3b1a4a;
+      opacity:.9;
+    }
+    input, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid rgba(2,6,23,.10);
+      outline:none;
+      background:rgba(255,255,255,.85);
+      color:var(--text);
+    }
+    input:focus, select:focus{
+      border-color:rgba(79,70,229,.35);
+      box-shadow:0 0 0 4px rgba(79,70,229,.10);
+    }
+    .hint{
+      font-size:12px;
+      color:var(--muted);
+      text-align:center;
+      margin-top:8px;
+      line-height:1.4;
     }
 
-    /* CUPÓN (oculto al inicio) */
-    .coupon-card {
-      display: none;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 20px 50px rgba(88, 28, 135, 0.3);
-      max-width: 400px;
-      width: 100%;
-      padding: 2rem 1.7rem 1.6rem;
-      position: relative;
-      animation: fadeIn 0.8s ease;
-    }
-
-    /* Ticket border */
-    .coupon-card::before {
-      content: "";
-      position: absolute;
-      inset: 0.9rem;
-      border-radius: 18px;
-      border: 2px dashed rgba(168, 85, 247, 0.35);
-      pointer-events: none;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(244, 114, 182, 0.16);
-      color: #9d174d;
-      padding: 0.25rem 0.8rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      position: relative;
-      z-index: 1;
-    }
-
-    .tag-emoji {
-      font-size: 0.9rem;
-    }
-
-    h1 {
-      font-size: 1.4rem;
-      margin-top: 1rem;
-      margin-bottom: 0.3rem;
-      color: var(--text);
-      position: relative;
-      z-index: 1;
-      line-height: 1.2;
-    }
-
-    .subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .highlight-box {
-      background: #f9e8ff;
-      border-radius: 14px;
-      padding: 0.9rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      margin-bottom: 1.1rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .highlight-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #6b21a8;
-      font-weight: 700;
-    }
-
-    .highlight-text {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #4c1d95;
-    }
-
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-weight: 600;
-      font-size: 0.8rem;
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      background: #ecfdf5;
-      color: #047857;
-    }
-
-    .status-dot {
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 999px;
-      background: #22c55e;
-    }
-
-    .status-pill.used {
-      background: #fef2f2;
-      color: #b91c1c;
-    }
-
-    .status-pill.used .status-dot {
-      background: #fb7185;
-    }
-
-    #redeem-btn {
-      width: 100%;
-      border: none;
-      border-radius: 999px;
-      padding: 0.9rem 1rem;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
-      background-size: 200% 200%;
-      color: #fff7ff;
-      transition: 0.15s ease;
-      box-shadow: 0 12px 26px rgba(192, 38, 211, 0.45);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-    }
-
-    #redeem-btn:hover {
-      transform: translateY(-1px);
-      background-position: 100% 0%;
-      box-shadow: 0 16px 32px rgba(168, 85, 247, 0.6);
-    }
-
-    .extra-text {
-      margin-top: 0.8rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @media (max-width:480px){
+      .grid{grid-template-columns:1fr;}
     }
   </style>
 </head>
-<body>
 
+<body>
   <div id="announcement" class="announcement">
     <h2>¡Has recibido un cupón!</h2>
-    <p>
-      ¿Lista para verlo?👀
-    </p>
+    <p>¿Lista para verlo? 👀</p>
     <button class="btn-main" id="open-coupon">Ver cupón</button>
   </div>
 
   <div id="coupon" class="coupon-card">
-    <div class="tag">
-      <span class="tag-emoji">🎟️</span>
-      Edición limitada 👓
-    </div>
+    <div class="tag"><span class="tag-emoji">🎟️</span>Edición limitada 👓</div>
 
-    <h1>Cupón para tener una cita</h1>
-
-    <p class="subtitle">
-      Canjeable por una cita juntos.
+    <h1 class="coupon-title">Cupón para una cita</h1>
+    <p class="coupon-desc">
+      Este cupón puede canjearse por una cita contigo 😌✨
     </p>
 
-    <div class="highlight-box">
-      <span class="highlight-label">Esto incluye</span>
-      <span class="highlight-text">
-        1 café (o lo que tú quieras, puede ser comida desayuno o cena) + tiempo juntos + todo lo que tu quieras
-      </span>
-    </div>
-
     <div class="status-row">
-      <span>Estado del cupón:</span>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <strong style="font-size:14px;">Estatus</strong>
+        <span style="font-size:12px;color:var(--muted);">Disponible para usarse cuando tú digas</span>
+      </div>
+
       <span id="status-pill" class="status-pill">
         <span class="status-dot"></span> Disponible
       </span>
     </div>
 
-    <button id="redeem-btn">
-      ✨ Usar este cupón
-    </button>
+    <button id="redeem-btn">✨ Usar este cupón</button>
+
+    <div class="scheduler" id="scheduler">
+      <h3>📅 Agendar en Google Calendar</h3>
+
+      <div class="grid">
+        <div class="field">
+          <label for="dt">Fecha y hora</label>
+          <input id="dt" type="datetime-local" />
+        </div>
+
+        <div class="field">
+          <label for="dur">Duración</label>
+          <select id="dur">
+            <option value="30">30 min</option>
+            <option value="60" selected>60 min</option>
+            <option value="90">90 min</option>
+            <option value="120">120 min</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="gcal-btn">🗓️ Agendar en Google Calendar</button>
+      <div class="hint">
+        Se abrirá Google Calendar con el evento prellenado (tú solo lo guardas).
+      </div>
+    </div>
 
     <p class="extra-text" id="info-text">
       Solo tienes que decirme “sí quiero” o mandarme un mensaje con la confirmación para poder tener una cita
@@ -285,25 +265,93 @@
   </div>
 
   <script>
+    const openCouponBtn = document.getElementById("open-coupon");
     const announcement = document.getElementById("announcement");
     const coupon = document.getElementById("coupon");
-    const openCouponBtn = document.getElementById("open-coupon");
+
+    const redeemBtn = document.getElementById("redeem-btn");
+    const statusPill = document.getElementById("status-pill");
+    const infoText = document.getElementById("info-text");
+
+    const scheduler = document.getElementById("scheduler");
+    const dtInput = document.getElementById("dt");
+    const durSelect = document.getElementById("dur");
+    const gcalBtn = document.getElementById("gcal-btn");
 
     openCouponBtn.addEventListener("click", () => {
       announcement.style.display = "none";
       coupon.style.display = "block";
     });
 
-    const redeemBtn = document.getElementById("redeem-btn");
-    const statusPill = document.getElementById("status-pill");
-    const infoText = document.getElementById("info-text");
+    function pad2(n){ return String(n).padStart(2, "0"); }
+
+    function toGCalDateUTC(dateObj){
+      // Google Calendar: YYYYMMDDTHHMMSSZ (UTC)
+      const y = dateObj.getUTCFullYear();
+      const m = pad2(dateObj.getUTCMonth() + 1);
+      const d = pad2(dateObj.getUTCDate());
+      const hh = pad2(dateObj.getUTCHours());
+      const mm = pad2(dateObj.getUTCMinutes());
+      const ss = pad2(dateObj.getUTCSeconds());
+      return `${y}${m}${d}T${hh}${mm}${ss}Z`;
+    }
+
+    function buildGCalUrl({ title, details, location, startLocal, durationMin }){
+      const start = new Date(startLocal); // interpreta como hora local del dispositivo
+      const end = new Date(start.getTime() + durationMin * 60 * 1000);
+
+      const dates = `${toGCalDateUTC(start)}/${toGCalDateUTC(end)}`;
+
+      const base = "https://calendar.google.com/calendar/render?action=TEMPLATE";
+      const params = new URLSearchParams({
+        text: title,
+        details: details,
+        location: location,
+        dates: dates
+      });
+
+      return `${base}&${params.toString()}`;
+    }
 
     redeemBtn.addEventListener("click", () => {
       statusPill.classList.add("used");
       statusPill.innerHTML = '<span class="status-dot"></span>Cupón usado (y yo muy feliz)';
       redeemBtn.disabled = true;
-      redeemBtn.textContent = "¡Cita confirmada!";
-      infoText.textContent = "Puede ser válido cualquier día y mas de un día (Por favor)";
+      redeemBtn.textContent = "¡Listo! Ahora agendemos 🗓️";
+      infoText.textContent = "Elige fecha y hora abajo y lo abrimos en Google Calendar ✨";
+
+      // Mostrar el bloque de agenda
+      scheduler.style.display = "block";
+
+      // Sugerencia: poner una fecha por default (mañana a las 7pm)
+      const now = new Date();
+      const suggested = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      suggested.setHours(19, 0, 0, 0);
+
+      // Formato requerido por datetime-local: YYYY-MM-DDTHH:MM
+      const yyyy = suggested.getFullYear();
+      const mm = pad2(suggested.getMonth() + 1);
+      const dd = pad2(suggested.getDate());
+      const hh = pad2(suggested.getHours());
+      const mi = pad2(suggested.getMinutes());
+      dtInput.value = `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
+    });
+
+    gcalBtn.addEventListener("click", () => {
+      if (!dtInput.value){
+        alert("Elige una fecha y hora para agendar 🙂");
+        return;
+      }
+
+      const url = buildGCalUrl({
+        title: "Cita (Cupón canjeado) ✨",
+        details: "Cita agendada desde el cupón. Si quieres cambiar la hora, puedes editarla antes de guardar 🙂",
+        location: "Por definir (online o presencial)",
+        startLocal: dtInput.value,
+        durationMin: Number(durSelect.value)
+      });
+
+      window.open(url, "_blank", "noopener,noreferrer");
     });
   </script>
 </body>
